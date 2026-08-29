@@ -1,5 +1,10 @@
 # Student Placement Management System 🎓💼
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://student-placement-management-system-v2-mtfraxlbv-shashank-bc73.vercel.app/login)
+[![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-blue?style=for-the-badge&logo=github)](https://github.com/shashankdasarii/student-placement-management-system-v2)
+
+> 🌐 **Live Vercel Application**: [https://student-placement-management-system-v2-mtfraxlbv-shashank-bc73.vercel.app/login](https://student-placement-management-system-v2-mtfraxlbv-shashank-bc73.vercel.app/login)
+
 A modern, full-stack enterprise campus recruitment platform built with high-performance Neumorphic aesthetics, automated CGPA eligibility scanning, in-drawer AI interview preparation, interactive SVG placement analytics, and zero-setup embedded database architecture.
 
 ---
