@@ -1,24 +1,26 @@
 # Student Placement Management System 🎓💼
 
-A modern, full-stack web application built to streamline campus placement drives, automated CGPA eligibility filtering, student job applications, and recruiter candidate management.
+A modern, full-stack enterprise campus recruitment platform built with high-performance Neumorphic aesthetics, automated CGPA eligibility scanning, in-drawer AI interview preparation, interactive SVG placement analytics, and zero-setup embedded database architecture.
 
 ---
 
-## 🚀 Resume Highlights
+## 🚀 Key Highlights & Architectural Features
 
-- **Architected a full-stack Student Placement Management System** using React, Node.js, Express, and MySQL to streamline job drives and candidate tracking.
-- **Implemented Role-Based Access Control (RBAC)** and secure authentication using JWTs and `bcryptjs` password hashing across Student and Recruiter roles.
-- **Engineered server-side SQL algorithms** to dynamically filter job eligibility based on student CGPA and drive deadlines.
-- **Integrated secure PDF file uploads** via `multer` and static middleware, allowing recruiters to review candidate resumes directly within the portal.
-- **Designed a relational database schema** using MySQL foreign keys, subqueries, and transactions to guarantee data integrity across users, companies, jobs, and applications.
+- **Enterprise SaaS Neumorphic Design System**: Custom architectural UI with dynamic specular highlights, smooth depth elevation, and seamless **Day & Night (Light / Dark) Dual Theme** switching.
+- **In-Drawer AI Interview Coach**: Real-time interview intelligence inside the drive inspection drawer, featuring company-tailored technical questions (DSA, System Design, Behavioral) and interactive readiness checklists.
+- **Interactive SVG Placement & CTC Analytics**: Pure SVG analytical engine visualizing CTC package distributions (`₹4.5 LPA` to `₹28.4+ LPA`), department clearance rates, and campus conversion funnels with zero third-party chart dependencies.
+- **Live Global Notification Center**: Right slide-over notification drawer with categorized recruitment alerts, unread badges, and direct navigation jumps.
+- **University-Sealed Placement Dossier**: Printable official student clearance certificate with institutional letterhead, cryptographic verification stamp (`APEX-VRF-2026-X892`), and clean `@media print` formatting.
+- **Recruiter Fast-Track Batch Dock**: Multi-select candidate checkboxes across List and Kanban views with floating bulk status updates (`Batch Shortlist`, `Batch Offer`, `Batch Reject`).
+- **Zero-Setup Embedded Database**: Powered by Node.js's native `node:sqlite` engine with Write-Ahead Logging (`WAL`), auto-seeding, and seamless toggle to MySQL (`DB_CLIENT=sqlite` or `DB_CLIENT=mysql`).
 
 ---
 
 ## 🛠️ Technology Stack
 
-- **Frontend:** React 18, React Router v6, Axios, Custom Modular CSS (Dark Slate Theme)
+- **Frontend:** React 18, React Router v6, Axios, Custom Pure CSS Design System, Web Audio Sound Engine
 - **Backend:** Node.js, Express.js, JWT (`jsonwebtoken`), Password Hashing (`bcryptjs`), File Uploads (`multer`)
-- **Database:** MySQL 8 (`mysql2/promise` pool with transactions, FK constraints, and dynamic subqueries)
+- **Database:** Native Embedded SQLite Engine (Node.js `DatabaseSync`) + MySQL 8 Pool (`mysql2/promise`)
 
 ---
 
@@ -28,71 +30,74 @@ A modern, full-stack web application built to streamline campus placement drives
 
 ```mermaid
 erDiagram
-    users ||--o| students : "has profile (user_id)"
-    users ||--o| recruiters : "has profile (user_id)"
-    recruiters ||--o{ jobs : "posts (company_id)"
-    students ||--o{ applications : "submits (student_id)"
-    jobs ||--o{ applications : "receives (job_id)"
+    USERS ||--o| STUDENTS : "has profile"
+    USERS ||--o| RECRUITERS : "has profile"
+    RECRUITERS ||--o{ JOBS : "posts"
+    STUDENTS ||--o{ APPLICATIONS : "submits"
+    JOBS ||--o{ APPLICATIONS : "receives"
 
-    users {
+    USERS {
         int id PK
-        string username UNIQUE
+        string username
         string password
-        enum role "student, recruiter, admin"
+        string role
         timestamp created_at
     }
 
-    students {
+    STUDENTS {
         int id PK
-        int user_id FK, UNIQUE
+        int user_id FK
         string name
-        string email UNIQUE
+        string email
         decimal cgpa
         string branch
         string resume_url
         timestamp created_at
     }
 
-    recruiters {
+    RECRUITERS {
         int id PK
-        int user_id FK, UNIQUE
+        int user_id FK
         string company_name
+        string email
         timestamp created_at
     }
 
-    jobs {
+    JOBS {
         int id PK
         int company_id FK
         string title
-        text description
+        string description
         decimal min_cgpa
         datetime deadline
         timestamp created_at
     }
 
-    applications {
+    APPLICATIONS {
         int id PK
         int student_id FK
         int job_id FK
-        enum status "Applied, Shortlisted, Interviewing, Accepted, Rejected"
+        string status
         timestamp applied_at
     }
 ```
 
 ---
 
-## ✨ Features
+## ✨ System Modules
 
 ### 🎓 Student Portal
-- **Secure Registration & Login:** Password protection via `bcryptjs` and 24-hour JWT token sessions.
-- **Automated CGPA Eligibility Engine:** Only view and apply for jobs where your CGPA meets or exceeds the recruiter's minimum threshold (`student.cgpa >= job.min_cgpa`).
-- **PDF Resume Uploads:** Upload and host official PDF resumes served statically via Express.
-- **Application Tracking:** Track real-time status updates (`Applied`, `Shortlisted`, `Accepted`, `Rejected`).
+- **Automated CGPA Eligibility Engine:** Dynamically filters campus drives where your academic standing satisfies the cutoff (`student.cgpa >= job.min_cgpa`).
+- **AI Interview Coach:** Curated technical question bank tailored to Google, Amazon, Microsoft, and tech partners.
+- **Interactive SVG Analytics:** Real-time visual CTC curve and department hiring trends.
+- **Printable Placement Dossier:** 1-click printable clearance document for physical campus interview panels.
+- **PDF Resume Upload & Inspection:** Upload, verify, and host resumes with static file serving.
 
-### 💼 Recruiter Portal
-- **Job Posting Management:** Create job listings specifying title, description, minimum CGPA, and drive deadline.
-- **Applicant Review Drawer:** View candidate list for each posted job including Name, Email, Branch, CGPA, and direct links to candidate PDF resumes.
-- **Status Decision Engine:** Update candidate status in real time (`Shortlisted`, `Accepted`, `Rejected`).
+### 💼 Recruiter Talent Console
+- **Drive Campaign Publisher:** Post placement drives specifying CTC, role details, CGPA cutoffs, and deadlines.
+- **Multi-Stage Review Panel:** Dual view modes (Interactive ATS Table and Kanban Pipeline).
+- **Batch Operations Action Dock:** Multi-select applicants for bulk shortlisting, interview invitations, or job offers.
+- **Instant CSV Export:** 1-click export of candidate rosters with academic standing and contact records.
 
 ---
 
@@ -100,57 +105,78 @@ erDiagram
 
 ### Prerequisites
 - Node.js (v18+)
-- MySQL Server (running on `localhost:3306`)
+- *(Optional)* MySQL Server (only required if switching from SQLite to MySQL)
 
-### 1. Database Setup
-Execute `database/schema.sql` to initialize `placement_db` and tables:
+### 1. Installation
+
 ```bash
-mysql -u root < database/schema.sql
+# Clone the repository
+git clone https://github.com/shashankdasarii/student-placement-management-system-v2.git
+cd student-placement-management-system-v2
+
+# Install backend dependencies
+cd backend && npm install
+
+# Install frontend dependencies
+cd ../frontend && npm install
 ```
 
-### 2. Backend Setup
+### 2. Environment Configuration
+
+The backend runs out-of-the-box with the **Embedded SQLite Database** (no setup needed).
+
+Ensure `backend/.env` contains:
+```env
+PORT=5001
+DB_CLIENT=sqlite
+JWT_SECRET=super_secret_jwt_key_placement_system_2026
+```
+
+*(Optional: To connect to MySQL instead, set `DB_CLIENT=mysql`, `DB_HOST=localhost`, `DB_USER=root`, `DB_PASSWORD=`, and `DB_NAME=placement_db`)*
+
+### 3. Run Locally
+
+**Start Backend Server:**
 ```bash
 cd backend
-npm install
-```
-Ensure `.env` contains:
-```env
-PORT=5000
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=
-DB_NAME=placement_db
-JWT_SECRET=super_secret_jwt_key_123
-```
-Start the backend server:
-```bash
-npm run dev
+npm start
+# Server runs on http://127.0.0.1:5001
 ```
 
-### 3. Frontend Setup
-In a new terminal window:
+**Start Frontend Application (in a new terminal):**
 ```bash
 cd frontend
-npm install
 npm start
+# Client opens on http://localhost:3000
 ```
-
-Navigate to `http://localhost:3000` in your web browser.
 
 ---
 
-## 📡 API Reference Table
+## 🔑 Pre-Configured Test Credentials
+
+| Role | Username | Password | Notes |
+| :--- | :--- | :--- | :--- |
+| **Student** | `john_student` | `password123` | Pre-configured student profile (CGPA: 8.75) |
+| **Student** | `Sasi` | `password123` | Student profile (CGPA: 8.45) |
+| **Recruiter** | `techcorp_hr` | `password123` | Recruiter profile for TechCorp Solutions |
+| **Recruiter** | `google_recruiter` | `password123` | Recruiter profile for Google |
+| **Admin** | `admin_user` | `password123` | System administrator |
+
+---
+
+## 📡 Core API Reference Table
 
 | Module | Method | Endpoint | Access | Description |
 |---|---|---|---|---|
-| **Auth** | `POST` | `/api/auth/register` | Public | Register student or recruiter |
+| **Health** | `GET` | `/api/health` | Public | Database connectivity & server health check |
+| **Auth** | `POST` | `/api/auth/register` | Public | Register student or recruiter account |
 | **Auth** | `POST` | `/api/auth/login` | Public | Authenticate user & issue JWT token |
-| **Auth** | `GET` | `/api/auth/me` | Private | Fetch logged-in user profile |
-| **Student** | `POST` | `/api/students/upload-resume` | Student | Upload PDF resume |
-| **Jobs** | `POST` | `/api/jobs` | Recruiter | Post new job opening |
-| **Jobs** | `GET` | `/api/jobs/eligible` | Student | Fetch CGPA-filtered eligible jobs |
-| **Jobs** | `GET` | `/api/jobs/my-jobs` | Recruiter | Fetch posted jobs & applicant count |
-| **Applications** | `POST` | `/api/applications/apply` | Student | Apply for a job opening |
-| **Applications** | `GET` | `/api/applications/my-applications` | Student | Track submitted job applications |
-| **Applications** | `GET` | `/api/applications/job/:jobId` | Recruiter | Review candidate applicants for job |
-| **Applications** | `PUT` | `/api/applications/:id/status` | Recruiter | Update candidate application status |
+| **Student** | `GET` | `/api/students/profile` | Student | Fetch logged-in student academic dossier |
+| **Student** | `POST` | `/api/students/upload-resume` | Student | Upload and verify PDF resume |
+| **Jobs** | `GET` | `/api/jobs/eligible` | Student | Fetch CGPA-filtered eligible drives |
+| **Jobs** | `GET` | `/api/jobs/recruiter` | Recruiter | Fetch posted drives with applicant metrics |
+| **Jobs** | `POST` | `/api/jobs/create` | Recruiter | Publish new institutional recruitment drive |
+| **Applications** | `POST` | `/api/applications/apply` | Student | Submit verified application for a drive |
+| **Applications** | `GET` | `/api/applications/my` | Student | Fetch student application pipeline status |
+| **Applications** | `GET` | `/api/applications/job/:jobId` | Recruiter | Review applicant roster for a drive |
+| **Applications** | `PUT` | `/api/applications/:id/status` | Recruiter | Update candidate application stage |
